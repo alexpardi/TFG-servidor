@@ -7,6 +7,7 @@ const userController = require ('../controllers/userController');
 
 router.post('/creaUsuari', userController.crearUsuari);
 router.post('/iniciaSessio', userController.Login);
-router.get('/modificaUsuari', verificaToken, userController.modificaUsuari);
+router.get('/getUsuari:id', verificaToken, userController.getUsuari);
+router.get('/modificaUsuari', userController.modificaUsuari);
 
 module.exports = router

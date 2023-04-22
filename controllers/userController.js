@@ -3,6 +3,7 @@ const User = require ("../model/User");
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcryptjs')
+const Producte = require("../model/Producte");
 
 exports.crearUsuari = async (req, res) => {
     try{
@@ -21,7 +22,7 @@ exports.crearUsuari = async (req, res) => {
 
         //crear token
         const token = jwt.sign({id: user._id}, config.TOKEN_SECRET, {
-            expiresIn: 60 * 60 * 24 * 365
+            expiresIn: 60 * 60 * 24
         })
 
         res.json({auth: true, token});
@@ -32,16 +33,52 @@ exports.crearUsuari = async (req, res) => {
     }
 }
 
-exports.modificaUsuari = async (req, res, next) =>{
+exports.modificaUsuari = async (req, res) =>{
+    try{
+        const { ModUsuari, ModEmail, ModNom, ModContrasenya } = req.body;
+        let user = await User.findOne(req.body.ModUsuari);
 
-    const user = await User.findById(req.userID, { UserContrasenya: 0 });
+        if(!user){
+            res.status(404).json({ msg: 'L.usuari no existeix'})
+        }
+
+        user.UserName = ModUsuari;
+        user.UserMail = ModEmail;
+        user.UserNameReal = ModNom;
+        user.UserContrasenya = ModContrasenya;
+
+        user = await User.findOneAndUpdate({ UserName: req.body.ModUsuari }, user, {new:true});
+        res.json(user);
+
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
+}
+
+exports.getUsuari = async (req, res, next) =>{
+
+    /*const user = await User.findById(req.userID, { UserContrasenya: 0 });
     if(!user){
         return res.status(404).send('No user found');
     }
 
-    res.json(user);
-}
+    res.json(user);*/
 
+    try{
+        let user = await User.findById(req.params.id, {UserContrasenya: 0});
+
+        if(!user){
+            res.status(404).json({ msg: 'El usuari no existeix'})
+        }
+
+        res.json(user);
+
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
+}
 
 exports.Login = async (req, res, next) =>{
     const {UserName, UserContrasenya} = req.body;
@@ -59,8 +96,8 @@ exports.Login = async (req, res, next) =>{
 
     //crear token
     const token = jwt.sign({id: user._id}, config.TOKEN_SECRET, {
-        expiresIn: 60 * 60 * 24 * 365
+        expiresIn: 60 * 60 * 24
     })
 
-    res.json({ auth: true, token });
+    res.json({ auth: true, token: token });
 }

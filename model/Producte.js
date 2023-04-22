@@ -3,11 +3,13 @@ const mongoose = require('mongoose');
 const ProducteSchema = mongoose.Schema({
     ProdID: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     ProdNom: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     ProdAfegits: {
         type: Number,

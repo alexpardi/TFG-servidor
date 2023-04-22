@@ -14,6 +14,7 @@ exports.crearProducte = async (req, res) => {
     }
 }
 
+//tots els productes que hi ha a la BD
 exports.obtenirProductes = async (req, res) => {
     try{
         const productes = await Producte.find();
@@ -50,6 +51,7 @@ exports.actualitzarProducte = async (req, res) => {
     }
 }
 
+//un unic producte per id
 exports.obtenirProducte = async (req, res) => {
     try{
         let producte = await Producte.findById(req.params.id);
