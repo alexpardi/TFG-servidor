@@ -8,6 +8,6 @@ const userController = require ('../controllers/userController');
 router.post('/creaUsuari', userController.crearUsuari);
 router.post('/iniciaSessio', userController.Login);
 router.get('/getUsuari:id', verificaToken, userController.getUsuari);
-router.get('/modificaUsuari', userController.modificaUsuari);
+router.put('/modificaUsuari', verificaToken, userController.modificaUsuari);
 
 module.exports = router

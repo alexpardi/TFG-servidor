@@ -1,18 +1,20 @@
-const User = require ("../model/User");
+const Client = require ("../model/Client");
 
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcryptjs')
 const Producte = require("../model/Producte");
+const favorits = require("../model/favorits");
 
 exports.crearUsuari = async (req, res) => {
     try{
-        const {UserName, UserMail, UserNameReal, UserContrasenya} = req.body;
-        const user = new User({
+        const {UserName, UserMail, UserNameReal, UserContrasenya, LlistaProductes} = req.body;
+        const user = new Client({
             UserName,
             UserMail,
             UserNameReal,
             UserContrasenya,
+            LlistaProductes,
         })
         //encriptar Password
         user.UserContrasenya = await bcrypt.hash(UserContrasenya, 10);
@@ -32,7 +34,7 @@ exports.modificaUsuari = async (req, res) =>{
     try{
         const { ModUsuari, ModEmail, ModNom, ModContrasenya } = req.body;
 
-        const user = await User.findOne({UserName: ModUsuari})
+        const user = await Client.findOne({UserName: ModUsuari})
 
         if(!user) {
             return res.status(404).send("L'usuari no existeix");
@@ -43,7 +45,7 @@ exports.modificaUsuari = async (req, res) =>{
         user.UserNameReal = ModNom;
         user.UserContrasenya = await bcrypt.hash(ModContrasenya, 10);
 
-        userChanged = await User.findOneAndUpdate({UserName: ModUsuari}, user, {new:true});
+        userChanged = await Client.findOneAndUpdate({UserName: ModUsuari}, user, {new:true});
         res.json(userChanged);
 
     }catch (error){
@@ -62,7 +64,7 @@ exports.getUsuari = async (req, res, next) =>{
     res.json(user);*/
 
     try{
-        let user = await User.findById(req.params.id, {UserContrasenya: 0});
+        let user = await Client.findById(req.params.id, {UserContrasenya: 0});
 
         if(!user){
             res.status(404).json({ msg: 'El usuari no existeix'})
@@ -78,7 +80,7 @@ exports.getUsuari = async (req, res, next) =>{
 
 exports.Login = async (req, res, next) =>{
     const {UserName, UserContrasenya} = req.body;
-    const user = await User.findOne({UserName: UserName})
+    const user = await Client.findOne({UserName: UserName})
 
     if(!user) {
         return res.status(404).send("L'usuari no existeix");
@@ -96,4 +98,20 @@ exports.Login = async (req, res, next) =>{
     })
 
     res.json({ auth: true, token: token });
+}
+
+exports.getFavorits = async (req, res) => {
+    try{
+        const user = await Client.findOne({UserName: UserName})
+
+        if(!user){
+            res.status(404).json({ msg: "L'usuari no existei"})
+        }
+
+        res.json(favorit);
+
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
 }

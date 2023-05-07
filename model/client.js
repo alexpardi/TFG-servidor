@@ -14,7 +14,10 @@ const UserSchema = mongoose.Schema({
     UserContrasenya: {
         type: String
     },
+    LlistaProductes: {
+        type: Array
+    },
 
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Client', UserSchema);
