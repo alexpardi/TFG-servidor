@@ -6,8 +6,7 @@ const router = express.Router();
 
 const producteController = require('../controllers/producteController');
 
-router.get('/', producteController.obtenirProductes);
-router.get('/:id', producteController.obtenirProducte);
-//router.get('/desplegable/:tipus', producteController.desplegableG);
+router.get('/:esport', producteController.desplegableG);
+router.get('/petit/:esport/:tipus', producteController.desplegableP);
 
 module.exports = router

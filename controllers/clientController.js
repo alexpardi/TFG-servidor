@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcryptjs')
 const Producte = require("../model/Producte");
-const favorits = require("../model/favorits");
 
 exports.crearUsuari = async (req, res) => {
     try{
@@ -98,20 +97,4 @@ exports.Login = async (req, res, next) =>{
     })
 
     res.json({ auth: true, token: token });
-}
-
-exports.getFavorits = async (req, res) => {
-    try{
-        const user = await Client.findOne({UserName: UserName})
-
-        if(!user){
-            res.status(404).json({ msg: "L'usuari no existei"})
-        }
-
-        res.json(favorit);
-
-    }catch (error){
-        console.log(error);
-        res.status(500).send('Hi ha un error');
-    }
 }

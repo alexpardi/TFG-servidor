@@ -14,7 +14,10 @@ const UserSchema = mongoose.Schema({
     UserContrasenya: {
         type: String
     },
-    LlistaProductes: {
+    LlistaFavorits: {
+        type: Array
+    },
+    LlistaCistell: {
         type: Array
     },
 

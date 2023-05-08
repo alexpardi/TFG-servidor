@@ -27,6 +27,14 @@ const ProducteSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    ProdTipus: {
+        type: String,
+        required: true
+    },
+    ProdEsport: {
+        type: Array,
+        required: true
+    },
     ProdImatge: {
         type: String,
         required: true

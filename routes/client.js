@@ -5,11 +5,17 @@ const router = express.Router();
 
 const clientController = require ('../controllers/clientController');
 const favoritsController = require("../controllers/favoritsController");
+const cistellController = require("../controllers/cistellController")
 
 router.post('/creaUsuari', clientController.crearUsuari);
 router.post('/iniciaSessio', clientController.Login);
 router.get('/getUsuari:id', verificaToken, clientController.getUsuari);
 router.put('/modificaUsuari', clientController.modificaUsuari);
-router.get('/getFavorits', clientController.getFavorits);
+router.put('/favorits', favoritsController.afegirFavorits);
+router.get('/favorits:id', favoritsController.getFavorits);
+router.put('/eliminafavorits', favoritsController.eliminarFavorit);
+router.put('/cistell', cistellController.afegirCistell);
+router.get('/cistell:id', cistellController.getCistell);
+router.put('/eliminacistell', cistellController.eliminarCistell);
 
 module.exports = router

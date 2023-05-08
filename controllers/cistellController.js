@@ -1,22 +1,14 @@
 const Client = require ("../model/Client");
 const Producte = require("../model/Producte");
 
-exports.afegirFavorits = async (req, res) => {
+exports.afegirCistell = async (req, res) => {
     try{
         const {UserName, LlistaProductes} = req.body;
         const user = await Client.findOne({UserName: UserName})
         if(!user) {
             return res.status(404).send("L'usuari no existeix");
         }
-        var existeix = false;
-        for (let i=0; i < user.LlistaFavorits.length; i++){
-            if (user.LlistaFavorits[i] == LlistaProductes){
-                existeix = true;
-            }
-        }
-        if(!existeix){
-            user.LlistaFavorits.push(LlistaProductes);
-        }
+        user.LlistaCistell.push(LlistaProductes);
         userChanged = await Client.findOneAndUpdate({UserName: UserName}, user, {new:true});
         res.json(userChanged);
     }catch (error){
@@ -25,7 +17,7 @@ exports.afegirFavorits = async (req, res) => {
     }
 }
 
-exports.getFavorits = async (req, res) => {
+exports.getCistell = async (req, res) => {
     try{
         let user = await Client.findById(req.params.id);
 
@@ -34,8 +26,8 @@ exports.getFavorits = async (req, res) => {
         }
 
         var producte = [];
-        for (let i=0; i < user.LlistaFavorits.length; i++){
-            producte.push(await Producte.findById(user.LlistaFavorits[i]));
+        for (let i=0; i < user.LlistaCistell.length; i++){
+            producte.push(await Producte.findById(user.LlistaCistell[i]));
         }
 
         res.json(producte);
@@ -46,7 +38,7 @@ exports.getFavorits = async (req, res) => {
     }
 }
 
-exports.eliminarFavorit = async (req, res) => {
+exports.eliminarCistell = async (req, res) => {
     try{
         const {UserName, LlistaProductes} = req.body;
         const user = await Client.findOne({UserName: UserName})
@@ -54,8 +46,8 @@ exports.eliminarFavorit = async (req, res) => {
             return res.status(404).send("L'usuari no existeix");
         }
 
-        var index = user.LlistaFavorits.indexOf(LlistaProductes);
-        user.LlistaFavorits.splice(index, 1);
+        var index = user.LlistaCistell.indexOf(LlistaProductes);
+        user.LlistaCistell.splice(index, 1);
 
         userChanged = await Client.findOneAndUpdate({UserName: UserName}, user, {new:true});
         res.json(userChanged);

@@ -27,7 +27,7 @@ exports.obtenirProductes = async (req, res) => {
 
 exports.actualitzarProducte = async (req, res) => {
     try{
-        const { ProdAfegits, ProdDescripcio, ProdID, ProdImatge, ProdNom, ProdPreu, ProdTalla } = req.body;
+        const { ProdAfegits, ProdDescripcio, ProdID, ProdImatge, ProdNom, ProdPreu, ProdTalla, ProdTipus, ProdEsport } = req.body;
         let producte = await Producte.findById(req.params.id);
 
         if(!producte){
@@ -41,6 +41,8 @@ exports.actualitzarProducte = async (req, res) => {
         producte.ProdNom = ProdNom;
         producte.ProdPreu = ProdPreu;
         producte.ProdTalla = ProdTalla;
+        producte.ProdTipus = ProdTipus;
+        producte.ProdEsport = ProdEsport;
 
         producte = await Producte.findOneAndUpdate({ _id: req.params.id }, producte, {new:true});
         res.json(producte);
@@ -79,6 +81,34 @@ exports.eliminarProducte = async (req, res) => {
 
         res.json({msg: 'Producte eliminat correctament'});
 
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
+}
+
+exports.desplegableG = async (req, res) => {
+    try{
+        let producte = await Producte.find({ProdEsport: req.params.esport});
+
+        if(!producte){
+            res.status(404).json({ msg: 'El producte no existeix'})
+        }
+        res.json(producte)
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
+}
+
+exports.desplegableP = async (req, res) => {
+    try{
+        let producte = await Producte.find({ProdEsport: req.params.esport , ProdTipus: req.params.tipus});
+
+        if(!producte){
+            res.status(404).json({ msg: 'El producte no existeix'})
+        }
+        res.json(producte)
     }catch (error){
         console.log(error);
         res.status(500).send('Hi ha un error');
