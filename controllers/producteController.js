@@ -29,23 +29,36 @@ exports.obtenirProductes = async (req, res) => {
 
 exports.actualitzarProducte = async (req, res) => {
     try{
-        const { ProdAfegits, ProdDescripcio, ProdID, ProdImatge, ProdNom, ProdPreu, ProdTalla, ProdTipus, ProdMarca, ProdEsport } = req.body;
+        const { ProdDescripcio, ProdID, ProdImatge, ProdNom, ProdPreu, ProdTipus, ProdMarca, ProdEsport, ProdAfegits, ProdAfegitsS, ProdAfegitsM, ProdAfegitsL, ProdAfegitsXL, ProdAfegits37, ProdAfegits38, ProdAfegits39, ProdAfegits40, ProdAfegits41, ProdAfegits42, ProdAfegits43, ProdAfegits44, ProdAfegits45} = req.body;
         let producte = await Producte.findById(req.params.id);
 
         if(!producte){
             res.status(404).json({ msg: 'El producte no existeix'})
         }
 
-        producte.ProdAfegits = ProdAfegits;
+
         producte.ProdDescripcio = ProdDescripcio;
         producte.ProdID = ProdID;
         producte.ProdImatge = ProdImatge;
         producte.ProdNom = ProdNom;
         producte.ProdPreu = ProdPreu;
-        producte.ProdTalla = ProdTalla;
         producte.ProdTipus = ProdTipus;
         producte.ProdMarca = ProdMarca;
         producte.ProdEsport = ProdEsport;
+        producte.ProdAfegits = ProdAfegits;
+        producte.ProdAfegitsS = ProdAfegitsS;
+        producte.ProdAfegitsM = ProdAfegitsM;
+        producte.ProdAfegitsL = ProdAfegitsL;
+        producte.ProdAfegitsXL = ProdAfegitsXL;
+        producte.ProdAfegits37 = ProdAfegits37;
+        producte.ProdAfegits38 = ProdAfegits38;
+        producte.ProdAfegits39 = ProdAfegits39;
+        producte.ProdAfegits40 = ProdAfegits40;
+        producte.ProdAfegits41 = ProdAfegits41;
+        producte.ProdAfegits42 = ProdAfegits42;
+        producte.ProdAfegits43 = ProdAfegits43;
+        producte.ProdAfegits44 = ProdAfegits44;
+        producte.ProdAfegits45 = ProdAfegits45;
 
         producte = await Producte.findOneAndUpdate({ _id: req.params.id }, producte, {new:true});
         res.json(producte);
