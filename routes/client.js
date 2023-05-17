@@ -17,5 +17,7 @@ router.put('/eliminafavorits', favoritsController.eliminarFavorit);
 router.put('/cistell', cistellController.afegirCistell);
 router.get('/cistell:id', cistellController.getCistell);
 router.put('/eliminacistell', cistellController.eliminarCistell);
+router.put('/comprar', cistellController.realitzarCompra);
+router.get('/compresanteriors:id', cistellController.getCompresAnteriors);
 
 module.exports = router

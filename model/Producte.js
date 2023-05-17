@@ -35,6 +35,10 @@ const ProducteSchema = mongoose.Schema({
         type: Array,
         required: true
     },
+    ProdMarca: {
+        type: String,
+        required: true
+    },
     ProdImatge: {
         type: String,
         required: true

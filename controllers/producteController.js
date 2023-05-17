@@ -1,5 +1,7 @@
 const Producte = require ("../model/Producte")
 
+
+
 exports.crearProducte = async (req, res) => {
     try{
         let producte;
@@ -27,7 +29,7 @@ exports.obtenirProductes = async (req, res) => {
 
 exports.actualitzarProducte = async (req, res) => {
     try{
-        const { ProdAfegits, ProdDescripcio, ProdID, ProdImatge, ProdNom, ProdPreu, ProdTalla, ProdTipus, ProdEsport } = req.body;
+        const { ProdAfegits, ProdDescripcio, ProdID, ProdImatge, ProdNom, ProdPreu, ProdTalla, ProdTipus, ProdMarca, ProdEsport } = req.body;
         let producte = await Producte.findById(req.params.id);
 
         if(!producte){
@@ -42,6 +44,7 @@ exports.actualitzarProducte = async (req, res) => {
         producte.ProdPreu = ProdPreu;
         producte.ProdTalla = ProdTalla;
         producte.ProdTipus = ProdTipus;
+        producte.ProdMarca = ProdMarca;
         producte.ProdEsport = ProdEsport;
 
         producte = await Producte.findOneAndUpdate({ _id: req.params.id }, producte, {new:true});
