@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const bcrypt = require('bcryptjs')
 const Producte = require("../model/Producte");
+const Comanda = require("../model/comanda")
 
 exports.crearUsuari = async (req, res) => {
     try{
@@ -96,4 +97,33 @@ exports.Login = async (req, res, next) =>{
     })
 
     res.json({ auth: true, token: token });
+}
+
+exports.eliminaUsuari = async (req, res) => {
+    try{
+        const {UserName, UserContrasenya} = req.body;
+        const user = await User.findOne({UserName: UserName})
+
+        if(!user){
+            res.status(404).json({ msg: "L'usuari no existeix"})
+        }
+        await User.findOneAndRemove({UserName: UserName});
+
+        res.json({msg: 'Usuari eliminat correctament'});
+
+    }catch (error){
+        console.log(error);
+        //res.status(500).send('Hi ha un error');
+    }
+}
+
+
+exports.getComanda = async (req, res, next) =>{
+    try{
+        const comanda = await Comanda.find();
+        res.json(comanda)
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
 }

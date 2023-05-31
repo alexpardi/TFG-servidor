@@ -63,7 +63,7 @@ exports.getUsuari = async (req, res, next) =>{
     res.json(user);*/
 
     try{
-        let user = await Client.findById(req.params.id, {UserContrasenya: 0});
+        let user = await Client.findById(req.params.id, {UserContrasenya: 0, LlistaCistell:0, LlistaCompresAnteriors:0, LlistaTallaCistell:0, LlistaQuantitatCistell:0});
 
         if(!user){
             res.status(404).json({ msg: 'El usuari no existeix'})
@@ -75,6 +75,13 @@ exports.getUsuari = async (req, res, next) =>{
         console.log(error);
         res.status(500).send('Hi ha un error');
     }
+
+    /*try{
+
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }*/
 }
 
 exports.Login = async (req, res, next) =>{

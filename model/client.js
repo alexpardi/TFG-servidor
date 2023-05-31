@@ -23,6 +23,9 @@ const UserSchema = mongoose.Schema({
     LlistaTallaCistell:{
         type:Array
     },
+    LlistaQuantitatCistell:{
+        type:Array
+    },
     LlistaCompresAnteriors:{
         type: Array
     },
