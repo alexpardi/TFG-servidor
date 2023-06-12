@@ -21,5 +21,7 @@ router.get('/quantitat:id', cistellController.getQuantitat);
 router.put('/eliminacistell', cistellController.eliminarCistell);
 router.put('/comprar', cistellController.realitzarCompra);
 router.get('/compresanteriors:id', cistellController.getCompresAnteriors);
+router.get('/tallacompresanteriors:id', cistellController.getTallaCompresAnteriors);
+router.get('/prodTCistell:id', cistellController.getProdTCistell);
 
 module.exports = router

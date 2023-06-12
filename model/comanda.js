@@ -34,6 +34,9 @@ const UserSchema = mongoose.Schema({
     QuantitatProductes:{
         type:Array
     },
+    realitzada:{
+        type:String
+    },
 });
 
 module.exports = mongoose.model('Comanda', UserSchema);

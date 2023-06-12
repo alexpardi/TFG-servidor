@@ -127,3 +127,39 @@ exports.getComanda = async (req, res, next) =>{
         res.status(500).send('Hi ha un error');
     }
 }
+
+exports.realitzarComanda= async (req, res, next) =>{
+    try{
+        const comanda = await Comanda.findById(req.params.id);
+
+        if(!comanda){
+            res.status(404).json({ msg: "La comanda no existeix"})
+        }
+
+        comanda.realitzada = "true";
+
+        comandachanged = await Comanda.findOneAndUpdate({_id: req.params.id}, comanda, {new:true});
+        res.json(comandachanged)
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
+}
+
+exports.norealitzarComanda= async (req, res, next) =>{
+    try{
+        const comanda = await Comanda.findById(req.params.id);
+
+        if(!comanda){
+            res.status(404).json({ msg: "La comanda no existeix"})
+        }
+
+        comanda.realitzada = "falso";
+
+        comandachanged = await Comanda.findOneAndUpdate({_id: req.params.id}, comanda, {new:true});
+        res.json(comandachanged)
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
+}

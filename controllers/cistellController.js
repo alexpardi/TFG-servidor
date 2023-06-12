@@ -25,6 +25,7 @@ exports.afegirCistell = async (req, res) => {
             user.LlistaTallaCistell.push(TallaProducte);
             user.LlistaQuantitatCistell.push(1);
         }
+        user.ProdTCistell = user.ProdTCistell +1;
 
         userChanged = await Client.findOneAndUpdate({UserName: UserName}, user, {new:true});
         res.json(userChanged);
@@ -97,6 +98,22 @@ exports.getQuantitat = async (req, res) => {
     }
 }
 
+exports.getProdTCistell = async (req, res) => {
+    try{
+        let user = await Client.findById(req.params.id);
+
+        if(!user){
+            res.status(404).json({ msg: 'El producte no existeix'})
+        }
+
+        res.json(user.ProdTCistell);
+
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
+}
+
 exports.eliminarCistell = async (req, res) => {
     try{
         const {UserName, LlistaProductes, TallaProducte} = req.body;
@@ -116,6 +133,7 @@ exports.eliminarCistell = async (req, res) => {
 
         user.LlistaCistell.splice(index, 1);
         user.LlistaTallaCistell.splice(index, 1);
+        user.ProdTCistell = user.ProdTCistell - user.LlistaQuantitatCistell[index];
         user.LlistaQuantitatCistell.splice(index, 1);
 
         userChanged = await Client.findOneAndUpdate({UserName: UserName}, user, {new:true});
@@ -221,24 +239,16 @@ exports.realitzarCompra = async (req, res) => {
 
                 producte = await Producte.findOneAndUpdate({_id: client.LlistaCistell[i]}, producte, {new: true});
                 client.LlistaCompresAnteriors.push(client.LlistaCistell[i]);
+                client.TallaCompresAnteriors.push(client.LlistaTallaCistell[i]);
 
                 LlistaProductes.push(client.LlistaCistell[i]);
                 TallaProductes.push(client.LlistaTallaCistell[i]);
                 QuantitatProductes.push(client.LlistaQuantitatCistell[i]);
             }
 
-            /*Comanda.UserName = UserName;
-            Comanda.Pais = Pais;
-            Comanda.Ciutat = Ciutat;
-            Comanda.CodiPostal = CodiPostal;
-            Comanda.CarrerNum = CarrerNum;
-            Comanda.NumeroTelf = NumeroTelf;
-            Comanda.LlistaProductes = client.LlistaCistell;
-            Comanda.TallaProductes = client.LlistaTallaCistell;
-            Comanda.QuantitatProductes = client.LlistaQuantitatCistell;*/
-
             let UserNameReal = client.UserNameReal;
             let UserMail = client.UserMail;
+            let realitzada = "falso";
 
             const comanda = new Comanda({
                 UserName,
@@ -252,12 +262,14 @@ exports.realitzarCompra = async (req, res) => {
                 LlistaProductes,
                 TallaProductes,
                 QuantitatProductes,
+                realitzada,
             })
             await comanda.save();
 
             client.LlistaCistell = [];
             client.LlistaTallaCistell = [];
             client.LlistaQuantitatCistell = [];
+            client.ProdTCistell = 0;
             await Client.findOneAndUpdate({UserName: UserName}, client, {new: true});
         }
         res.json({msg: 'Compra realitzada'})
@@ -281,18 +293,26 @@ exports.getCompresAnteriors = async (req, res) => {
             producte.push(await Producte.findById(user.LlistaCompresAnteriors[i]));
         }
 
-        //Esto permite ordenar por Precio!! manejar para usarla en diferentes lados!!
-        /*producte.sort(function (a, b) {
-            if (a.ProdPreu > b.ProdPreu) {
-                return 1;
-            }
-            if (a.ProdPreu < b.ProdPreu) {
-                return -1;
-            }
-            // a must be equal to b
-            return 0;
-        });*/
-        //hasta aquí!!!
+        res.json(producte);
+
+    }catch (error){
+        console.log(error);
+        res.status(500).send('Hi ha un error');
+    }
+}
+
+exports.getTallaCompresAnteriors = async (req, res) => {
+    try{
+        let user = await Client.findById(req.params.id);
+
+        if(!user){
+            res.status(404).json({ msg: 'El producte no existeix'})
+        }
+
+        var producte = [];
+        for (let i=0; i < user.TallaCompresAnteriors.length; i++){
+            producte.push(user.TallaCompresAnteriors[i]);
+        }
 
         res.json(producte);
 

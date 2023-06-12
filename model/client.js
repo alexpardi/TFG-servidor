@@ -29,6 +29,12 @@ const UserSchema = mongoose.Schema({
     LlistaCompresAnteriors:{
         type: Array
     },
+    TallaCompresAnteriors:{
+        type: Array
+    },
+    ProdTCistell:{
+        type: Number
+    },
 
 });
 
